@@ -5,12 +5,17 @@
   "license": "MIT",
   "dependencies": {
     "@adiwajshing/baileys": "^4.0.1",
+    "@adiwajshing/keyed-db": "^0.2.4",
     "@hapi/boom": "^9.1.4",
     "axios": "^0.26.0",
     "joel-bot": "https://github.com/joelvitorniino/joel-bot.git",
     "pino": "^7.8.0",
     "qrcode-terminal": "^0.12.0",
     "typescript": "^4.5.5",
-    "wa-sticker-formatter": "^4.3.2"
+    "wa-sticker-formatter": "^4.3.2",
+    "ytdl-core": "^4.10.1"
+  },
+  "scripts": {
+    "dev": "ts-node-dev src/app.ts"
   }
 }

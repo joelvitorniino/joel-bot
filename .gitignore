@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# baileys authentication
+auth_info.json
+baileys_store.json
