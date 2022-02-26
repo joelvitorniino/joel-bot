@@ -1,26 +1,30 @@
 import { WAMessage } from "@adiwajshing/baileys";
-import ytdl from "ytdl-core";
+import axios from "axios";
+import { IVideo } from "../interfaces/IVideo";
 import { commandSlice } from "../utils/commandSlice";
 
 export class Video {
-    constructor(public sock, public jid: String, public msg: WAMessage) {
-        this.sendCommand(sock, jid, msg);
-    };
+  constructor(public sock, public jid: String, public msg: WAMessage) {
+    this.sendCommand(sock, jid, msg);
+  }
 
-    async sendCommand(sock, jid: String, msg: WAMessage) {
-        const body = String(msg.message.conversation);
-        const bodySlice = commandSlice(body, 2);
+  async sendCommand(sock, jid: String, msg: WAMessage) {
+    const body = String(msg.message.conversation);
+    const bodySlice = commandSlice(body, 2);
 
-        if(msg.message.conversation === `!v ${bodySlice}`) {
-            await ytdl.getInfo(`https://${bodySlice}`)
-                .then(videoInfo => {
-                    sock.sendMessage(jid, {
-                        video: {
-                            url: videoInfo.formats[0].url
-                        },
-                        mimetype: 'video/mp4'
-                    })
-                });
-        };
+    if (msg.message.conversation === `!v ${bodySlice}`) {
+      const bodyURI = encodeURI(bodySlice);
+
+      const response = await axios.get<IVideo>(
+        `https://api-get-info-youtube.herokuapp.com/api/v1/video?link=${bodyURI}`
+      );
+
+      sock.sendMessage(jid, {
+        video: {
+          url: response.data.linkVideo,
+        },
+        mimetype: "video/mp4",
+      });
     };
+  };
 };

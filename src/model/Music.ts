@@ -1,5 +1,6 @@
 import { WAMessage } from "@adiwajshing/baileys";
-import ytdl from "ytdl-core";
+import axios from 'axios';
+import { IMusic } from "../interfaces/IMusic";
 import { commandSlice } from "../utils/commandSlice";
 
 export class Music {
@@ -12,12 +13,13 @@ export class Music {
         const sliceBody = commandSlice(body, 2);
 
         if(msg.message.conversation === `!m ${sliceBody}`) {
-            const info = await ytdl.getInfo(`https://${sliceBody}`);
-            const audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
+            const bodyURI = encodeURI(sliceBody);
+
+            const response = await axios.get<IMusic>(`https://api-get-info-youtube.herokuapp.com/api/v1/music?link=${bodyURI}`);
 
             await sock.sendMessage(jid, {
                 audio: {
-                    url: audioFormats[0].url
+                    url: response.data.linkMusic
                 },
                 mimetype: 'audio/mp4'
             });
