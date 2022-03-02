@@ -1,9 +1,10 @@
 import { WAMessage } from "@adiwajshing/baileys";
 import axios from "axios";
-import { IVideo } from "../interfaces/IVideo";
-import { commandSlice } from "../utils/commandSlice";
+import { IVideo } from "../../interfaces/IVideo";
+import { commandSlice } from "../../utils/commandSlice";
+import { CommandService } from "./CommandService";
 
-export class Video {
+export class VideoCommandService implements CommandService {
   constructor(public sock, public jid: String, public msg: WAMessage) {
     this.sendCommand(sock, jid, msg);
   }

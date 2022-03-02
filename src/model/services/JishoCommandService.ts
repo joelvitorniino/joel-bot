@@ -1,9 +1,10 @@
 import { WAMessage } from '@adiwajshing/baileys';
 import axios from 'axios';
-import { IJisho } from '../interfaces/IJisho';
-import { commandSlice } from '../utils/commandSlice';
+import { IJisho } from '../../interfaces/IJisho';
+import { commandSlice } from '../../utils/commandSlice';
+import { CommandService } from './CommandService';
 
-export class Jisho {
+export class JishoCommandService implements CommandService {
     constructor(public sock, public jid: String, public msg: WAMessage) {
         this.sendCommand(sock, jid, msg);
     };

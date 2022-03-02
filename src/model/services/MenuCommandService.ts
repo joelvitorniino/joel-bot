@@ -1,7 +1,8 @@
 import { WAMessage } from "@adiwajshing/baileys";
 import fs from 'fs';
+import { CommandService } from "./CommandService";
 
-export class Menu {
+export class MenuCommandService implements CommandService {
     constructor(public sock, public jid: String, public msg: WAMessage) {
         this.sendCommand(sock, jid, msg);
     };

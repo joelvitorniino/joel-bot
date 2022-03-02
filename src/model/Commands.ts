@@ -1,14 +1,11 @@
-import { proto, WAMessage, WAProto } from "@adiwajshing/baileys";
-import { Jisho } from "./Jisho";
-import { Menu } from "./Menu";
-import { Music } from "./Music";
-import { Video } from "./Video";
+import { WAMessage } from "@adiwajshing/baileys";
+import { CommandService } from "./services/CommandService";
+import { JishoCommandService } from "./services/JishoCommandService";
 
 export class Commands {
-    constructor(public sock, public msg: WAMessage, public jid: String) {
-        new Menu(sock, jid, msg);
-        new Video(sock, jid, msg);
-        new Music(sock, jid, msg);
-        new Jisho(sock, jid, msg);
-    };
-};
+    private _service: CommandService;
+
+    constructor(_service: CommandService) {
+        this._service = _service;
+    }
+}

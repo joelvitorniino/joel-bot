@@ -1,9 +1,10 @@
 import { WAMessage } from "@adiwajshing/baileys";
 import axios from 'axios';
-import { IMusic } from "../interfaces/IMusic";
-import { commandSlice } from "../utils/commandSlice";
+import { IMusic } from "../../interfaces/IMusic";
+import { commandSlice } from "../../utils/commandSlice";
+import { CommandService } from "./CommandService";
 
-export class Music {
+export class MusicCommandService implements CommandService {
     constructor(public sock, public jid: String, public msg: WAMessage) {
         this.sendCommand(sock, jid, msg);
     };
