@@ -7,6 +7,7 @@ import { MenuCommandService } from './model/services/MenuCommandService';
 import { CommandService } from './model/services/CommandService';
 import { VideoCommandService } from './model/services/VideoCommandService';
 import { MusicCommandService } from './model/services/MusicCommandService';
+import { LyricsCommandService } from './model/services/LyricsCommandService';
 
 
 const { state, saveState } = useSingleFileLegacyAuthState('./auth_info.json');
@@ -34,7 +35,8 @@ const startSock = async () => {
             new JishoCommandService(sock, jid, msg),
             new MenuCommandService(sock, jid, msg),
             new VideoCommandService(sock, jid, msg),
-            new MusicCommandService(sock, jid, msg)
+            new MusicCommandService(sock, jid, msg),
+            new LyricsCommandService(sock, jid, msg)
         ];
 
         commands.map(command => {

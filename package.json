@@ -8,6 +8,8 @@
     "@adiwajshing/keyed-db": "^0.2.4",
     "@hapi/boom": "^9.1.4",
     "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
+    "genius-lyrics-api": "^3.2.0",
     "pino": "^7.8.0",
     "qrcode-terminal": "^0.12.0",
     "typescript": "^4.5.5",
