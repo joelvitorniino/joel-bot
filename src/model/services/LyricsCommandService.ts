@@ -16,11 +16,12 @@ export class LyricsCommandService implements CommandService {
         
         if(msg.message.conversation === `!lyrics ${sliceBody}`) {
             const splitLyrics: string[] = sliceBody.split("|");
+            const [title, artist] = splitLyrics;
 
             const options = {
                 apiKey: process.env.API_KEY_GENIUS,
-                title: splitLyrics[0],
-                artist: splitLyrics[1],
+                title: title,
+                artist: artist,
                 optimizeQuery: true
             };
 
