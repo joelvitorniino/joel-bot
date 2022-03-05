@@ -1,13 +1,7 @@
 import { Boom } from '@hapi/boom';
 import P from 'pino';
-import { AnyMessageContent, delay, DisconnectReason, fetchLatestBaileysVersion, makeWALegacySocket, useSingleFileLegacyAuthState } from '@adiwajshing/baileys';
-import { Commands } from './model/Commands';
-import { JishoCommandService } from './model/services/JishoCommandService';
-import { MenuCommandService } from './model/services/MenuCommandService';
-import { CommandService } from './model/services/CommandService';
-import { VideoCommandService } from './model/services/VideoCommandService';
-import { MusicCommandService } from './model/services/MusicCommandService';
-import { LyricsCommandService } from './model/services/LyricsCommandService';
+import { DisconnectReason, fetchLatestBaileysVersion, makeWALegacySocket, useSingleFileLegacyAuthState } from '@adiwajshing/baileys';
+import { startCommands } from './function/startCommands';
 
 
 const { state, saveState } = useSingleFileLegacyAuthState('./auth_info.json');
@@ -31,17 +25,7 @@ const startSock = async () => {
         const msg = m.messages[0];
         const jid = msg.key.remoteJid;
 
-        const commands: CommandService[] = [
-            new JishoCommandService(sock, jid, msg),
-            new MenuCommandService(sock, jid, msg),
-            new VideoCommandService(sock, jid, msg),
-            new MusicCommandService(sock, jid, msg),
-            new LyricsCommandService(sock, jid, msg)
-        ];
-
-        commands.map(command => {
-            new Commands(command);
-        });
+        startCommands(sock, jid, msg);
     });
 
     sock.ev.on('messages.update', m => console.log(m));
