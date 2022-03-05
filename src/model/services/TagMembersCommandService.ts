@@ -8,7 +8,7 @@ export class TagMembersCommandService implements CommandService {
 
     async sendCommand(sock, jid: String, msg: WAMessage) {
 
-        if(msg.message.conversation === '!mt') {
+        if(msg.message.conversation === '!tagmembers') {
             const metadata = await sock.groupMetadata(jid, false);
             const array = metadata.participants.map(all => all.id);
             let allMembers = "";
