@@ -1,20 +1,23 @@
-import { WAMessage } from "@adiwajshing/baileys";
+import { WAMessage, WASocket } from "@adiwajshing/baileys";
 import { CommandService } from "./CommandService";
-import { getLyrics, getSong } from 'genius-lyrics-api';
+import { getSong } from 'genius-lyrics-api';
 import dotenv from 'dotenv';
 import { commandSlice } from "../../utils/commandSlice";
 
 dotenv.config();
 
 export class LyricsCommandService implements CommandService {
-    constructor(public sock, public jid: String, public msg: WAMessage) {
-        this.sendCommand(sock, jid, msg);
+    private msg: WAMessage;
+    private sock: WASocket;
+
+    constructor(public jid: string) {
+        this.sendCommand(jid);
     }
 
-    sendCommand(sock, jid: String, msg: WAMessage) {
-        const sliceBody = commandSlice(msg.message.conversation, 7);
+    sendCommand(jid: string) {
+        const sliceBody = commandSlice(this.msg.message.conversation, 7);
         
-        if(msg.message.conversation === `!lyrics ${sliceBody}`) {
+        if(this.msg.message.conversation === `!lyrics ${sliceBody}`) {
             const splitLyrics: string[] = sliceBody.split("|");
             const [title, artist] = splitLyrics;
 
@@ -27,7 +30,7 @@ export class LyricsCommandService implements CommandService {
 
             getSong(options)
                 .then(song => {
-                    sock.sendMessage(jid, {
+                    this.sock.sendMessage(jid, {
                         text: `${song.lyrics}`
                     });
                 });
