@@ -1,20 +1,21 @@
 import { Boom } from '@hapi/boom';
 import P from 'pino';
-import { DisconnectReason, fetchLatestBaileysVersion, makeWALegacySocket, useSingleFileLegacyAuthState } from '@adiwajshing/baileys';
+import makeWASocket, { DisconnectReason, fetchLatestBaileysVersion, makeWALegacySocket, useSingleFileAuthState, useSingleFileLegacyAuthState } from '@adiwajshing/baileys';
 import { startCommands } from './function/startCommands';
+import { CreateCommand } from './model/CreateCommand';
 
 
-const { state, saveState } = useSingleFileLegacyAuthState('./auth_info.json');
+const { state, saveState } = useSingleFileAuthState('./auth_info.json');
 
 const startSock = async () => {
     const { version, isLatest } = await fetchLatestBaileysVersion();
     console.log(`using WA v${version.join('.')}, isLatest: ${isLatest}`)
 
-    const sock = makeWALegacySocket({
+    const sock = makeWASocket({
         version,
         logger: P({ level: 'debug' }),
         printQRInTerminal: true,
-        auth: state,
+        auth: state
     });
 
     sock.ev.on('chats.set', item => console.log(`recv ${item.chats.length} chats (is latest: ${item.isLatest})`));
