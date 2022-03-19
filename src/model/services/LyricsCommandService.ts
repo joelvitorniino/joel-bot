@@ -7,17 +7,15 @@ import { commandSlice } from "../../utils/commandSlice";
 dotenv.config();
 
 export class LyricsCommandService implements CommandService {
-    private msg: WAMessage;
-    private sock: WASocket;
 
-    constructor(public jid: string) {
-        this.sendCommand(jid);
+    constructor(public sock: WASocket, public jid: string, msg: WAMessage) {
+        this.sendCommand(sock, jid, msg);
     }
 
-    sendCommand(jid: string) {
-        const sliceBody = commandSlice(this.msg.message.conversation, 7);
+    sendCommand(sock: WASocket, jid: string, msg: WAMessage) {
+        const sliceBody = commandSlice(msg.message.conversation, 7);
         
-        if(this.msg.message.conversation === `!lyrics ${sliceBody}`) {
+        if(msg.message.conversation === `!lyrics ${sliceBody}`) {
             const splitLyrics: string[] = sliceBody.split("|");
             const [title, artist] = splitLyrics;
 
@@ -30,7 +28,7 @@ export class LyricsCommandService implements CommandService {
 
             getSong(options)
                 .then(song => {
-                    this.sock.sendMessage(jid, {
+                    sock.sendMessage(jid, {
                         text: `${song.lyrics}`
                     });
                 });
