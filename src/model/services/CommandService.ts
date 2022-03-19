@@ -1,5 +1,5 @@
-import { WAMessage } from "@adiwajshing/baileys";
+import { WAMessage, WASocket } from "@adiwajshing/baileys";
 
 export interface CommandService {
-    sendCommand(jid: string, msg: WAMessage): void;
+    sendCommand(sock: WASocket, jid: string, msg: WAMessage): void;
 }
