@@ -3,19 +3,17 @@ import fs from 'fs';
 import { CommandService } from "./CommandService";
 
 export class MenuCommandService implements CommandService {
-    private msg: WAMessage;
-    private sock: WASocket;
 
-    constructor(public jid: string) {
-        this.sendCommand(jid);
+    constructor(public sock: WASocket, public jid: string, public msg: WAMessage) {
+        this.sendCommand(sock, jid, msg);
     };
 
-    sendCommand(jid: string) {
-        if(this.msg.message.conversation.startsWith('!') && this.msg.message.conversation === '!menu') {
+    sendCommand(sock: WASocket, jid: string, msg: WAMessage) {
+        if(msg.message.conversation.startsWith('!') && msg.message.conversation === '!menu') {
             fs.readFile(`/home/joel/Documents/joel-bot/src/md/menu.md`, 'utf-8', (err, data) => {
                 if(err) throw err;
 
-                this.sock.sendMessage(jid, { text: data });
+                sock.sendMessage(jid, { text: data });
             });
         };        
     };
