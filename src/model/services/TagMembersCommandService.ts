@@ -2,23 +2,21 @@ import { WAMessage, WASocket } from "@adiwajshing/baileys";
 import { CommandService } from "./CommandService";
 
 export class TagMembersCommandService implements CommandService {
-    private msg: WAMessage;
-    private sock: WASocket;
 
-    constructor(public jid: string) {
-        this.sendCommand(jid);
+    constructor(public sock: WASocket, public jid: string, public msg: WAMessage) {
+        this.sendCommand(sock, jid, msg);
     };
 
-    async sendCommand(jid: string) {
+    async sendCommand(sock: WASocket, jid: string, msg: WAMessage) {
 
-        if(this.msg.message.conversation === '!tagmembers') {
+        if(msg.message.conversation === '!tagmembers') {
             const metadata = await this.sock.groupMetadata(jid);
             const array = metadata.participants.map(all => all.id);
             let allMembers = "";
             
             array.forEach((participant, i) => allMembers += `@${array[i].replace('@s.whatsapp.net', '')}\n`);
     
-            await this.sock.sendMessage(jid, {
+            await sock.sendMessage(jid, {
                 text: allMembers,
                 mentions: array
             });    
