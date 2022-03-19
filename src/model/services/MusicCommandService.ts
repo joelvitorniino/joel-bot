@@ -5,23 +5,21 @@ import { commandSlice } from "../../utils/commandSlice";
 import { CommandService } from "./CommandService";
 
 export class MusicCommandService implements CommandService {
-    private msg: WAMessage;
-    private sock: WASocket;
 
-    constructor(public jid: string) {
-        this.sendCommand(jid);
+    constructor(public sock: WASocket, public jid: string, public msg: WAMessage) {
+        this.sendCommand(sock, jid, msg);
     };
 
-    async sendCommand(jid: string) {
-        const body = String(this.msg.message.conversation);
+    async sendCommand(sock: WASocket, jid: string, msg: WAMessage) {
+        const body = String(msg.message.conversation);
         const sliceBody = commandSlice(body, 2);
 
-        if(this.msg.message.conversation === `!m ${sliceBody}`) {
+        if(msg.message.conversation === `!m ${sliceBody}`) {
             const bodyURI = encodeURI(sliceBody);
 
             const response = await axios.get<IMusic>(`https://api-get-info-youtube.herokuapp.com/api/v1/music?link=${bodyURI}`);
 
-            await this.sock.sendMessage(jid, {
+            await sock.sendMessage(jid, {
                 audio: {
                     url: response.data.linkMusic
                 },
