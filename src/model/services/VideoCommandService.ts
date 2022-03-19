@@ -5,25 +5,23 @@ import { commandSlice } from "../../utils/commandSlice";
 import { CommandService } from "./CommandService";
 
 export class VideoCommandService implements CommandService {
-  private msg: WAMessage;
-  private sock: WASocket;
 
-  constructor(public jid: string) {
-    this.sendCommand(jid);
+  constructor(public sock: WASocket, public jid: string, public msg: WAMessage) {
+    this.sendCommand(sock, jid, msg);
   }
 
-  async sendCommand(jid: string) {
-    const body = String(this.msg.message.conversation);
+  async sendCommand(sock: WASocket, jid: string, msg: WAMessage) {
+    const body = String(msg.message.conversation);
     const bodySlice = commandSlice(body, 2);
 
-    if (this.msg.message.conversation === `!v ${bodySlice}`) {
+    if (msg.message.conversation === `!v ${bodySlice}`) {
       const bodyURI = encodeURI(bodySlice);
 
       const response = await axios.get<IVideo>(
         `https://api-get-info-youtube.herokuapp.com/api/v1/video?link=${bodyURI}`
       );
 
-      this.sock.sendMessage(jid, {
+      sock.sendMessage(jid, {
         video: {
           url: response.data.linkVideo,
         },
