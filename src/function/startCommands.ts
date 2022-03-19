@@ -8,14 +8,14 @@ import { MusicCommandService } from "../model/services/MusicCommandService";
 import { TagMembersCommandService } from "../model/services/TagMembersCommandService";
 import { VideoCommandService } from "../model/services/VideoCommandService";
 
-export const startCommands = (sock, jid: String, msg: WAMessage) => {
+export const startCommands = (jid: string) => {
     const commands: CommandService[] = [
-        new JishoCommandService(sock, jid, msg),
-        new MenuCommandService(sock, jid, msg),
-        new VideoCommandService(sock, jid, msg),
-        new MusicCommandService(sock, jid, msg),
-        new LyricsCommandService(sock, jid, msg),
-        new TagMembersCommandService(sock, jid, msg)
+        new JishoCommandService(jid),
+        new MenuCommandService(jid),
+        new VideoCommandService(jid),
+        new MusicCommandService(jid),
+        new LyricsCommandService(jid),
+        new TagMembersCommandService(jid)
     ];
 
     return commands.map(command => {
