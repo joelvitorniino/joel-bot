@@ -1,8 +1,7 @@
 import { Boom } from '@hapi/boom';
 import P from 'pino';
-import makeWASocket, { DisconnectReason, fetchLatestBaileysVersion, makeWALegacySocket, useSingleFileAuthState, useSingleFileLegacyAuthState } from '@adiwajshing/baileys';
+import makeWASocket, { DisconnectReason, fetchLatestBaileysVersion, useSingleFileAuthState } from '@adiwajshing/baileys';
 import { startCommands } from './function/startCommands';
-import { CreateCommand } from './model/CreateCommand';
 
 
 const { state, saveState } = useSingleFileAuthState('./auth_info.json');
