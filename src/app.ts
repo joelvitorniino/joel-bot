@@ -25,7 +25,7 @@ const startSock = async () => {
         const msg = m.messages[0];
         const jid = msg.key.remoteJid;
 
-        startCommands(jid);
+        startCommands(sock, jid, msg);
     });
 
     sock.ev.on('messages.update', m => console.log(m));

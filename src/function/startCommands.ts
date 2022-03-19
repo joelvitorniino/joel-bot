@@ -1,4 +1,4 @@
-import { WAMessage } from "@adiwajshing/baileys";
+import { WAMessage, WASocket } from "@adiwajshing/baileys";
 import { Commands } from "../model/Commands";
 import { CommandService } from "../model/services/CommandService";
 import { JishoCommandService } from "../model/services/JishoCommandService";
@@ -8,14 +8,14 @@ import { MusicCommandService } from "../model/services/MusicCommandService";
 import { TagMembersCommandService } from "../model/services/TagMembersCommandService";
 import { VideoCommandService } from "../model/services/VideoCommandService";
 
-export const startCommands = (jid: string) => {
+export const startCommands = (sock: WASocket, jid: string, msg: WAMessage) => {
     const commands: CommandService[] = [
-        new JishoCommandService(jid),
-        new MenuCommandService(jid),
-        new VideoCommandService(jid),
-        new MusicCommandService(jid),
-        new LyricsCommandService(jid),
-        new TagMembersCommandService(jid)
+        new JishoCommandService(sock, jid, msg),
+        new MenuCommandService(sock, jid, msg),
+        new VideoCommandService(sock, jid, msg),
+        new MusicCommandService(sock, jid, msg),
+        new LyricsCommandService(sock, jid, msg),
+        new TagMembersCommandService(sock, jid, msg)
     ];
 
     return commands.map(command => {
