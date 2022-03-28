@@ -8,17 +8,25 @@ import { MusicCommandService } from "../model/services/MusicCommandService";
 import { TagMembersCommandService } from "../model/services/TagMembersCommandService";
 import { VideoCommandService } from "../model/services/VideoCommandService";
 
-export const startCommands = (sock: WASocket, jid: string, msg: WAMessage) => {
-    const commands: CommandService[] = [
-        new JishoCommandService(sock, jid, msg),
-        new MenuCommandService(sock, jid, msg),
-        new VideoCommandService(sock, jid, msg),
-        new MusicCommandService(sock, jid, msg),
-        new LyricsCommandService(sock, jid, msg),
-        new TagMembersCommandService(sock, jid, msg)
-    ];
+const getCommand = (body: string) => {
+    const regex = /^\![A-Za-z0-9]+/;
+  
+    const command = regex.exec(body)[0].split("!")[1];
+  
+    return command;
+};
 
-    return commands.map(command => {
-        new Commands(command);
-    });
+export const startCommands = (sock: WASocket, jid: string, msg: WAMessage) => {
+    const commands = {
+        jisho: JishoCommandService,
+        menu:  MenuCommandService,
+        video: VideoCommandService,
+        music: MusicCommandService,
+        lyrics: LyricsCommandService,
+        tagMembers: TagMembersCommandService
+    };
+
+    const commandInitialized = new commands[getCommand(msg.message.conversation)](sock, jid, msg);
+
+    return commandInitialized;
 };

@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@adiwajshing/baileys": "^4.0.1",
+    "@adiwajshing/baileys": "https://github.com/adiwajshing/Baileys",
     "@adiwajshing/keyed-db": "^0.2.4",
     "@hapi/boom": "^9.1.4",
     "axios": "^0.26.0",

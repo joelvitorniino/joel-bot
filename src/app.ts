@@ -21,7 +21,7 @@ const startSock = async () => {
     sock.ev.on('messages.set', item => console.log(`recv ${item.messages.length} messages (is latest: ${item.isLatest})`));
     sock.ev.on('contacts.set', item => console.log(`recv ${item.contacts.length} contacts`));
 
-    sock.ev.on('messages.upsert', async m => {
+    sock.ev.on('messages.upsert', async (m) => {
         const msg = m.messages[0];
         const jid = msg.key.remoteJid;
 
